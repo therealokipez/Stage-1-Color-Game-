@@ -2,57 +2,75 @@ const colorBox = document.getElementById("colorBox");
 const optionsContainer = document.getElementById("options");
 const gameStatus = document.getElementById("gameStatus");
 const scoreElement = document.getElementById("score");
-const newGameButton = document.getElementById("newGameButton");
+const newGuessButton = document.getElementById("newGuessButton");
+const difficultySelect = document.getElementById("difficulty"); // Dropdown for difficulty
 
 let targetColor;
 let score = 0;
+let correct = false;
+let correctButton = null;
 
-// Generate random color
-function getRandomColor() {
-    const r = Math.floor(Math.random() * 256);
-    const g = Math.floor(Math.random() * 256);
-    const b = Math.floor(Math.random() * 256);
-    return `rgb(${r}, ${g}, ${b})`;
+function getRandomBaseColor() {
+    return {
+        r: Math.floor(Math.random() * 256),
+        g: Math.floor(Math.random() * 256),
+        b: Math.floor(Math.random() * 256),
+    };
 }
 
-// Initialize game
+function getSimilarColor(base, variation) {
+    return `rgb(${base.r + Math.floor(Math.random() * variation - variation / 2)}, 
+                 ${base.g + Math.floor(Math.random() * variation - variation / 2)}, 
+                 ${base.b + Math.floor(Math.random() * variation - variation / 2)})`;
+}
+
+function generateColors() {
+    let baseColor = getRandomBaseColor();
+    let variation = difficultySelect.value === "hard" ? 20 : 50; // Hard = subtle changes, Medium = more noticeable
+
+    return Array.from({ length: 6 }, () => getSimilarColor(baseColor, variation));
+}
+
 function startGame() {
     gameStatus.textContent = "";
     optionsContainer.innerHTML = "";
+    correct = false;
+    correctButton = null;
 
-    // Generate six random colors
-    let colors = Array.from({ length: 6 }, getRandomColor);
-    
-    // Choose one color as the target
+    let colors = generateColors();
     targetColor = colors[Math.floor(Math.random() * colors.length)];
     colorBox.style.backgroundColor = targetColor;
 
-    // Create buttons for options
     colors.forEach(color => {
         const button = document.createElement("button");
         button.classList.add("color-option");
         button.style.backgroundColor = color;
         button.dataset.testid = "colorOption";
-        button.addEventListener("click", () => checkAnswer(color));
+        button.disabled = false;
+        button.addEventListener("click", () => handleGuess(button, color));
         optionsContainer.appendChild(button);
     });
 }
 
-// Check if selected color is correct
-function checkAnswer(selectedColor) {
+function handleGuess(button, selectedColor) {
+    if (correct) return; // Prevent multiple correct clicks
+
     if (selectedColor === targetColor) {
         gameStatus.textContent = "Correct!";
         gameStatus.style.color = "green";
         score++;
         scoreElement.textContent = score;
+        correct = true;
+        correctButton = button;
+        correctButton.disabled = true; // Disable correct button
     } else {
         gameStatus.textContent = "Wrong! Try again.";
         gameStatus.style.color = "red";
     }
 }
 
-// New game button
-newGameButton.addEventListener("click", startGame);
+// Event listeners
+newGuessButton.addEventListener("click", startGame);
+difficultySelect.addEventListener("change", startGame); // Restart on difficulty change
 
-// Start the game initially
 startGame();
