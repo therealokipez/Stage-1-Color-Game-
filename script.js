@@ -3,10 +3,12 @@ const optionsContainer = document.getElementById("options");
 const gameStatus = document.getElementById("gameStatus");
 const scoreElement = document.getElementById("score");
 const newGuessButton = document.getElementById("newGuessButton");
-const difficultySelect = document.getElementById("difficulty"); // Hidden dropdown
+const difficultySelect = document.getElementById("difficulty");
+const livesElement = document.getElementById("lives");
 
 let targetColor;
 let score = 0;
+let lives = 3;
 let correct = false;
 let correctButton = null;
 
@@ -26,12 +28,23 @@ function getSimilarColor(base, variation) {
 
 function generateColors() {
     let baseColor = getRandomBaseColor();
-    let variation = difficultySelect.value === "hard" ? 20 : 50; // Hard = subtle changes, Medium = more noticeable
+    let variation = difficultySelect.value === "hard" ? 20 : 50;
 
     return Array.from({ length: 6 }, () => getSimilarColor(baseColor, variation));
 }
 
+function updateLives() {
+    livesElement.textContent = "❤️".repeat(lives);
+    if (lives === 0) {
+        gameStatus.textContent = "Game Over!";
+        gameStatus.style.color = "red";
+        optionsContainer.innerHTML = ""; // Disable buttons
+    }
+}
+
 function startGame() {
+    if (lives === 0) return;
+
     gameStatus.textContent = "";
     optionsContainer.innerHTML = "";
     correct = false;
@@ -53,7 +66,7 @@ function startGame() {
 }
 
 function handleGuess(button, selectedColor) {
-    if (correct) return; // Prevent multiple correct clicks
+    if (correct) return;
 
     if (selectedColor === targetColor) {
         gameStatus.textContent = "Correct!";
@@ -62,15 +75,19 @@ function handleGuess(button, selectedColor) {
         scoreElement.textContent = score;
         correct = true;
         correctButton = button;
-        correctButton.disabled = true; // Disable correct button
+        correctButton.disabled = true;
+
+        // Auto-increase difficulty after correct guess
+        difficultySelect.value = "hard";
     } else {
         gameStatus.textContent = "Wrong! Try again.";
         gameStatus.style.color = "red";
+        lives--;
+        updateLives();
     }
 }
 
 // Event listeners
 newGuessButton.addEventListener("click", startGame);
-difficultySelect.addEventListener("change", startGame); // Restart on difficulty change
 
 startGame();
