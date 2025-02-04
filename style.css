@@ -1,55 +1,39 @@
-body {
-    font-family: Arial, sans-serif;
+#gameContainer {
     text-align: center;
-    background-color: #f8f9fa;
-}
-
-.game-container {
     max-width: 400px;
-    margin: 50px auto;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: auto;
 }
 
 #colorBox {
-    width: 100px;
-    height: 100px;
+    width: 200px;
+    height: 200px;
     margin: 20px auto;
-    border: 2px solid #333;
+    border-radius: 10px;
 }
 
-.color-options {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-}
-
-.color-option {
-    width: 60px;
-    height: 60px;
+#options button {
+    width: 80px;
+    height: 80px;
+    margin: 5px;
     border: none;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
-#gameStatus {
-    font-weight: bold;
-    margin: 10px;
+#newGuessButton {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
 }
 
-#newGameButton {
-    padding: 10px 15px;
-    border: none;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-top: 10px;
-}
+@media (max-width: 600px) {
+    #colorBox {
+        width: 250px;
+        height: 250px;
+    }
 
-#newGameButton:hover {
-    background-color: #0056b3;
+    #options button {
+        width: 100px;
+        height: 100px;
+    }
 }
