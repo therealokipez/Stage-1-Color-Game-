@@ -7,15 +7,22 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="game-container">
-        <h1>Color Guessing Game</h1>
-        <p data-testid="gameInstructions">Guess the correct color!</p>
-        <div id="colorBox" data-testid="colorBox"></div>
-        <div id="options" class="color-options"></div>
-        <p id="gameStatus" data-testid="gameStatus"></p>
-        <p>Score: <span id="score" data-testid="score">0</span></p>
-        <button id="newGuessButton" data-testid="newGuessButton">New Guess</button>
+    <div id="gameContainer">
+    <div id="colorBox" data-testid="colorBox"></div>
+    <div id="options"></div>
+    <p id="gameInstructions" data-testid="gameInstructions">Guess the correct color!</p>
+    <p id="gameStatus" data-testid="gameStatus"></p>
+    <p>Score: <span id="score" data-testid="score">0</span></p>
+    
+    <!-- Hidden Difficulty Selector -->
+    <select id="difficulty" style="display: none;">
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+    </select>
+
+    <button id="newGuessButton" data-testid="newGuessButton">New Guess</button>
     </div>
+    
     <script src="script.js"></script>
 </body>
 </html>
