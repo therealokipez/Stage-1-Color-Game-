@@ -8,7 +8,7 @@ const livesElement = document.getElementById("lives");
 
 let targetColor;
 let score = 0;
-let lives = 3;
+let lives = 4;
 let correct = false;
 let correctButton = null;
 
@@ -39,16 +39,18 @@ function updateLives() {
         gameStatus.textContent = "Game Over!";
         gameStatus.style.color = "red";
         optionsContainer.innerHTML = ""; // Disable buttons
+        newGuessButton.disabled = true; // Disable "New Guess" button on game over
     }
 }
 
 function startGame() {
-    if (lives === 0) return;
+    if (lives === 0) return; // Prevents playing after Game Over
 
     gameStatus.textContent = "";
     optionsContainer.innerHTML = "";
     correct = false;
     correctButton = null;
+    newGuessButton.disabled = false; // Enable "New Guess" button
 
     let colors = generateColors();
     targetColor = colors[Math.floor(Math.random() * colors.length)];
@@ -87,7 +89,17 @@ function handleGuess(button, selectedColor) {
     }
 }
 
-// Event listeners
-newGuessButton.addEventListener("click", startGame);
+// **Fix: Reset lives & difficulty on New Guess**
+newGuessButton.addEventListener("click", () => {
+    if (lives === 0) {
+        score = 0;
+        lives = 3;
+        difficultySelect.value = "medium"; // Reset difficulty
+        scoreElement.textContent = score;
+        updateLives();
+    }
+    startGame();
+});
 
+// Start the game on page load
 startGame();
