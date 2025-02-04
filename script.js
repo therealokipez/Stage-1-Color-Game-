@@ -3,7 +3,7 @@ const optionsContainer = document.getElementById("options");
 const gameStatus = document.getElementById("gameStatus");
 const scoreElement = document.getElementById("score");
 const newGuessButton = document.getElementById("newGuessButton");
-const difficultySelect = document.getElementById("difficulty"); // Dropdown for difficulty
+const difficultySelect = document.getElementById("difficulty"); // Hidden dropdown
 
 let targetColor;
 let score = 0;
